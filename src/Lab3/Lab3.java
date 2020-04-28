@@ -96,7 +96,8 @@ public class Lab3 {
         return whitened;
     }
 
-    // отбеливание - усложняет задачу поиска ключа полным перебором, поскольку криптоаналитик не может узнать, какие данные попадают на вход функции F первого раунда.
+    // отбеливание - усложняет задачу поиска ключа полным перебором, поскольку криптоаналитик
+    // не может узнать, какие данные попадают на вход функции F первого раунда.
     public static int[] whitening(int[] plainText, int k0, int k1, int k2, int k3) {
         return new int[]{
                 plainText[0] ^ k0,
@@ -130,10 +131,10 @@ public class Lab3 {
         int t1 = h(Integer.rotateLeft(input[3], 8), s[1], s[0]);
         final int[] pPht = pht(t0, t1);
         final int[] roundKeys = roundKeys(key, round + 4);
-        //сдвиг на 1 бит
+
         final int f0 = pPht[0] + roundKeys[0];
         final int f1 = pPht[1] + roundKeys[1];
-        //сдвиг на 1 бит
+
         final int p2 = Integer.rotateLeft(input[0], 1) ^ f0;
         final int p3 = Integer.rotateRight(input[1] ^ f1, 1);
         //
@@ -246,14 +247,14 @@ public class Lab3 {
         final int m2 = key[2];
         final int m3 = key[3];
         //Для формирования раундовых подключей исходный ключ M разбивается с перестановкой байт на два одинаковых блока Mo и Me.
-        // Затем с помощью блока Mo и функции h шифруется значение 2*i, а с помощью блока Me шифруется значение 2*i+1, где i — номер текущего раунда (0 — 15).
         final int[] Me = new int[]{m0, m2};
         final int[] Mo = new int[]{m1, m3};
-        //Полученные зашифрованные блоки смешиваются криптопреобразованием Адамара - обратимое преобразование битовой строки длиной 2n.
         // Строка разбивается на две части a и b одинаковой длины в n бит., и затем используются в качестве раундовых подключей.
         final int rho = (1 << 24) | (1 << 16) | (1 << 8) | 1;
+        // Затем с помощью блока Mo и функции h шифруется значение 2*i, а с помощью блока Me шифруется значение 2*i+1, где i — номер текущего раунда (0 — 15).
         final int Ai = h(2 * round * rho, Me[0], Me[1]);
         final int Bi = Integer.rotateLeft(h((2 * round + 1) * rho, Mo[0], Mo[1]), 8);
+        // Полученные зашифрованные блоки смешиваются криптопреобразованием Адамара - обратимое преобразование битовой строки длиной 2n.
         final int[] pPht = pht(Ai, Bi);
         final int K2i = pPht[0];
         final int K2i_1 = Integer.rotateLeft(pPht[1], 9);
